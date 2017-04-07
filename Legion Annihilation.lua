@@ -104,7 +104,7 @@ if not Menu.IsKeyDown(LegionCommander.optionKey) then return end
 	   
 			end
 	        
-			if NPC.IsEntityInRange(hero, myHero, 200) and (not NPC.HasModifier(myHero, "modifier_item_invisibility_edge_windwalk") or not NPC.HasModifier(myHero, "modifier_item_silver_edge_windwalk") )  then
+			if NPC.IsEntityInRange(hero, myHero, 200) and not NPC.IsLinkensProtected(hero) and (not NPC.HasModifier(myHero, "modifier_item_invisibility_edge_windwalk") or not NPC.HasModifier(myHero, "modifier_item_silver_edge_windwalk") )  then
 			 if PressTheAttack and Ability.IsCastable(PressTheAttack, myMana) then Ability.CastTarget(PressTheAttack, myHero) return end
 			 if Mjollnir and Ability.IsCastable(Mjollnir, myMana) then Ability.CastTarget(Mjollnir, myHero) return end
 			 if LotusOrb and Ability.IsCastable(LotusOrb, myMana) then Ability.CastTarget(LotusOrb, myHero) return end
