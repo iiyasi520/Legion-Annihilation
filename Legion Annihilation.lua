@@ -1,19 +1,35 @@
+--Author: spiregor
 local LegionCommander = {}
 
 LegionCommander.optionKey = Menu.AddKeyOption({"Hero Specific","Legion Commander","Legion Annihilation"},"Combo Key",Enum.ButtonCode.KEY_D)
 LegionCommander.optionEnable = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation"},"Enabled","Enable Or Disable Legion Combo Script")
 LegionCommander.optionTypeMode = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation"},"Use combo with: ","Dagger Or Invisible Sword")
 LegionCommander.optionPoABefore = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation"},"Use Press of Attak before invisibility","Enable of Disable")
-
-LegionCommander.optionLinkensBreakerAbyss = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation","Linkens Breaker"},"Abyssal Blade","Enable Or Disable")
-
+--// Menu Linkens Breaker //--
+LegionCommander.optionLinkensBreakerAbyssal = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation","Linkens Breaker"},"Abyssal Blade","Enable Or Disable")
+LegionCommander.optionLinkensBreakerOrchid = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation","Linkens Breaker"},"Orchid Malevolence","Enable Or Disable")
+LegionCommander.optionLinkensBreakerBlood = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation","Linkens Breaker"},"BloodThorn","Enable Or Disable")
+LegionCommander.optionLinkensBreakerEuls = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation","Linkens Breaker"},"Eul's Scepter","Enable Or Disable")
+LegionCommander.optionLinkensBreakerRoA = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation","Linkens Breaker"},"Rod of Atos","Enable Or Disable")
+LegionCommander.optionLinkensBreakerHex = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation","Linkens Breaker"},"Scythe of Vyse","Enable Or Disable")
+LegionCommander.optionLinkensBreakerForceStaff = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation","Linkens Breaker"},"Force Staff","Enable Or Disable")
+LegionCommander.optionLinkensBreakerHalberd = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation","Linkens Breaker"},"Heaven's Halberd","Enable Or Disable")
+LegionCommander.optionLinkensBreakerDiffusal = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation","Linkens Breaker"},"Diffusal Blade","Enable Or Disable")
+--//----------------------//
 LegionCommander.optionBKB = Menu.AddOption({"Hero Specific","Legion Commander","Legion Annihilation","Items"},"Black King Bar","Enable Or Disable")
 
 LegionCommander.sleepers = {}
 
 	Menu.SetValueName(LegionCommander.optionTypeMode, 1, "Dagger")
 	Menu.SetValueName(LegionCommander.optionTypeMode, 0, "Invisible Sword")
-
+	
+	
+	
+LegionCommander.ItemsLinkensBreaker =
+{
+Abyssal = "item_abyssal_blade",
+Halberd = "item_heavens_halberd"
+}	
 function LegionCommander.OnUpdate()
     if not LegionCommander.SleepCheck(0.1, "updaterate") then return end
     if not Menu.IsEnabled(LegionCommander.optionEnable) then return true end
@@ -51,6 +67,19 @@ if not Menu.IsKeyDown(LegionCommander.optionKey) then return end
 	local BloodThorn  = NPC.GetItem(myHero, "item_bloodthorn", true)
 	local Abyssal  = NPC.GetItem(myHero, "item_abyssal_blade", true)
 	local Armlet = NPC.GetItem(myHero, "item_armlet", true)
+	local Euls = NPC.GetItem( myHero, "item_cyclone", true)
+	local RoA = NPC.GetItem( myHero, "item_rod_of_atos", true)
+	local Hex = NPC.GetItem(myHero, "item_sheepstick", true)
+	local ForceStaff = NPC.GetItem(myHero, "item_force_staff", true)
+	local Halberd = NPC.GetItem(myHero, "item_heavens_halberd", true)
+	local Diffus = NPC.GetItem(myHero, "item_diffusal_blade", true)
+	if not Diffus then
+		for i = 2, 2 do
+			Diffus = NPC.GetItem(myHero, "item_diffusal_blade_" .. i, true)
+			if Diffus then break end
+		end
+	end	 
+	
 	if Menu.IsEnabled(LegionCommander.optionEnable) and Duel and Ability.IsCastable(Duel, myMana) then
 	--Dagger MOD	
 		if Menu.IsEnabled(LegionCommander.optionTypeMode) then
@@ -66,8 +95,24 @@ if not Menu.IsKeyDown(LegionCommander.optionKey) then return end
 			if NPC.IsEntityInRange(hero, myHero, 200) then
 				
 				if NPC.IsLinkensProtected(hero)then
-					if Menu.IsEnabled(LegionCommander.optionLinkensBreakerAbyss)
+					if Menu.IsEnabled(LegionCommander.optionLinkensBreakerAbyssal)
 					and Abyssal and Ability.IsCastable(Abyssal, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Abyssal, hero); return end
+					if Menu.IsEnabled(LegionCommander.optionLinkensBreakerOrchid)
+					and Orchid and Ability.IsCastable(Orchid, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Orchid, hero); return end
+					if Menu.IsEnabled(LegionCommander.optionLinkensBreakerBlood)
+					and BloodThorn and Ability.IsCastable(BloodThorn, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(BloodThorn, hero); return end
+					if Menu.IsEnabled(LegionCommander.optionLinkensBreakerEuls)
+					and Euls and Ability.IsCastable(Euls, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Euls, hero); return end
+					if Menu.IsEnabled(LegionCommander.optionLinkensBreakerRoA)
+					and RoA and Ability.IsCastable(RoA, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(RoA, hero); return end
+					if Menu.IsEnabled(LegionCommander.optionLinkensBreakerHex)
+					and Hex and Ability.IsCastable(Hex, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Hex, hero); return end
+					if Menu.IsEnabled(LegionCommander.optionLinkensBreakerForceStaff)
+					and ForceStaff and Ability.IsCastable(ForceStaff, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(ForceStaff, hero); return end
+					if Menu.IsEnabled(LegionCommander.optionLinkensBreakerHalberd)
+					and Halberd and Ability.IsCastable(Halberd, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Halberd, hero); return end
+					if Menu.IsEnabled(LegionCommander.optionLinkensBreakerDiffusal)
+					and Diffus and Ability.IsCastable(Diffus, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Diffus, hero); return end
 				end
 				if not NPC.IsLinkensProtected(hero) then
 				if Mjollnir and Ability.IsCastable(Mjollnir, myMana) then Ability.CastTarget(Mjollnir, myHero) return end
@@ -85,7 +130,7 @@ if not Menu.IsKeyDown(LegionCommander.optionKey) then return end
 				end
 			end
 		end
-	-- Invisible MOD	
+	--//Invisible MOD//--	
 		if not Menu.IsEnabled(LegionCommander.optionTypeMode) then 
 			if (ShadowBlade or SilverEdge) and Duel and Ability.IsCastable(Duel, myMana) then
 		
@@ -98,10 +143,26 @@ if not Menu.IsKeyDown(LegionCommander.optionKey) then return end
 				Player.AttackTarget( Players.GetLocal(), myHero , hero , false ) return end
 		    end
 			
-			if NPC.IsLinkensProtected(hero)then
-				if Menu.IsEnabled(LegionCommander.optionLinkensBreakerAbyss)
+			if NPC.IsLinkensProtected(hero) and NPC.IsEntityInRange(hero, myHero, 370) then
+				if Menu.IsEnabled(LegionCommander.optionLinkensBreakerAbyssal)
 				and Abyssal and Ability.IsCastable(Abyssal, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Abyssal, hero); return end
-	   
+				--LegionCommander.CheckItemsLinkensBreaker(myHero,hero,myMana)
+				if Menu.IsEnabled(LegionCommander.optionLinkensBreakerOrchid)
+				and Orchid and Ability.IsCastable(Orchid, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Orchid, hero); return end
+				if Menu.IsEnabled(LegionCommander.optionLinkensBreakerBlood)
+				and BloodThorn and Ability.IsCastable(BloodThorn, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(BloodThorn, hero); return end
+				if Menu.IsEnabled(LegionCommander.optionLinkensBreakerEuls)
+				and Euls and Ability.IsCastable(Euls, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Euls, hero); return end
+				if Menu.IsEnabled(LegionCommander.optionLinkensBreakerRoA)
+				and RoA and Ability.IsCastable(RoA, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(RoA, hero); return end
+				if Menu.IsEnabled(LegionCommander.optionLinkensBreakerHex)
+				and Hex and Ability.IsCastable(Hex, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Hex, hero); return end
+				if Menu.IsEnabled(LegionCommander.optionLinkensBreakerForceStaff)
+				and ForceStaff and Ability.IsCastable(ForceStaff, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(ForceStaff, hero); return end
+				if Menu.IsEnabled(LegionCommander.optionLinkensBreakerHalberd)
+				and Halberd and Ability.IsCastable(Halberd, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Halberd, hero); return end
+				if Menu.IsEnabled(LegionCommander.optionLinkensBreakerDiffusal)
+				and Diffus and Ability.IsCastable(Diffus, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(Diffus, hero); return end
 			end
 	        
 			if NPC.IsEntityInRange(hero, myHero, 200) and not NPC.IsLinkensProtected(hero) and (not NPC.HasModifier(myHero, "modifier_item_invisibility_edge_windwalk") or not NPC.HasModifier(myHero, "modifier_item_silver_edge_windwalk") )  then
@@ -121,6 +182,16 @@ if not Menu.IsKeyDown(LegionCommander.optionKey) then return end
 		end
 	end	
 end
+
+--[[function LegionCommander.CheckItemsLinkensBreaker(myHero,hero,myMana)
+    for key, val in pairs(LegionCommander.ItemsLinkensBreaker) do
+	 if Menu.IsEnabled(LegionCommander.optionLinkensBreaker..key) then
+	 	key = NPC.GetItem(myHero, val, true)
+		if key and Ability.IsCastable(key, myMana) and NPC.IsLinkensProtected(hero) then Ability.CastTarget(key, hero); return end
+	 end
+	end
+end]]
+
 
 function LegionCommander.SleepCheck(delay, id)
 	if not LegionCommander.sleepers[id] or (os.clock() - LegionCommander.sleepers[id]) > delay then
